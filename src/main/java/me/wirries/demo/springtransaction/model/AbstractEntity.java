@@ -4,13 +4,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * This is the base class of an entity. An entity is identified by the uuid.
@@ -32,9 +32,10 @@ public abstract class AbstractEntity {
     @Getter
     @Setter
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "UUID")
-    private UUID uuid;
+    private String uuid;
 
     // Audit information
     @Getter

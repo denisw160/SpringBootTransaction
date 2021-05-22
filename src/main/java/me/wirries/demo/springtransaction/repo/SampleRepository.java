@@ -5,7 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * This repository handles the {@link Sample}.
@@ -15,7 +14,7 @@ import java.util.UUID;
  * @since 22.05.2021
  */
 @Transactional
-public interface SampleRepository extends CrudRepository<Sample, UUID> {
+public interface SampleRepository extends CrudRepository<Sample, String> {
 
     /**
      * Find all {@link Sample} by the given colUnique value.
