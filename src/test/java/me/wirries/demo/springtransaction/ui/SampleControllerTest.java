@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -39,33 +41,37 @@ class SampleControllerTest extends AbstractWebTests {
 
     @Test
     void reset() throws Exception {
-        assertEquals(100, count(Sample.class));
+        assertEquals(100, count());
         mockMvc.perform(post("/reset"))
                 .andExpect(status().isOk());
-        assertEquals(10, count(Sample.class));
+        assertEquals(10, count());
     }
 
     @Test
     void testUpdate() throws Exception {
         mockMvc.perform(post("/update"))
                 .andExpect(status().isOk());
-        assertEquals("Updating first record", single(Sample.class, "colInt=0").getColString());
+
+        final List<Sample> list = list();
+        assertEquals("Updating first record", list.get(0).getColString());
     }
 
     @Test
-    void updateMultiple() throws Exception {
-        assertEquals(100, count(Sample.class));
+    void updateMultiple() {
+        assertEquals(100, count());
         assertThrows(Exception.class, () -> mockMvc.perform(post("/updateMultiple")));
     }
 
     @Test
     void updateTransactional() throws Exception {
-        assertEquals(100, count(Sample.class));
+        assertEquals(100, count());
         mockMvc.perform(post("/updateTransactional"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Update failed"));
-        assertEquals("Update before the transaction", single(Sample.class, "colInt=0").getColString());
-        assertEquals("Exception: Error during flush within the transaction", single(Sample.class, "colInt=99").getColString());
+        final List<Sample> list = list();
+        assertEquals("Update before the transaction", list.get(0).getColString());
+        assertEquals("Exception: Error during flush within the transaction", list.get(99).getColString());
+        assertEquals(100, count());
     }
 
     @Test
