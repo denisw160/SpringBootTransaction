@@ -1,5 +1,7 @@
 # SpringBootTransaction
 
+[![Maven Build](https://github.com/denisw160/SpringBootTransaction/actions/workflows/maven.yml/badge.svg)](https://github.com/denisw160/SpringBootTransaction/actions/workflows/maven.yml)
+
 This demo project shows you the transaction handling in Spring Boot with Spring Data (JPA).
 
 ## Build
